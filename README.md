@@ -1,4 +1,6 @@
 # cac-iitg_analytics -- Capstone
+
+
 🚗 Dynamic Parking Pricing System (Real-time with Pathway & Bokeh)
 This project implements a real-time dynamic parking pricing model that adjusts parking fees based on factors like demand, traffic, queue length, special events, and vehicle type. The goal is to optimize resource usage, reduce congestion, and improve user experience by simulating real-world parking dynamics using streaming data.
 
@@ -116,4 +118,3 @@ Workflow Diagram
 
 🚀 Future Improvements
 While the project currently implements two core dynamic pricing models — a Real-Time Baseline Model and a Demand-Based Pricing Model — a potential enhancement includes integrating a Competitive Pricing Model. This model would dynamically adjust parking rates based on nearby competitors’ pricing using geographic proximity (latitude and longitude). Additionally, future work could explore deeper integration of real-world traffic APIs, predictive occupancy trends, and user behavior analytics to further optimize pricing strategies and rerouting decisions.
-
