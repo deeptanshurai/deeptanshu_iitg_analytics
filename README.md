@@ -1,23 +1,23 @@
-# 🚗 Dynamic Parking Pricing System (Real-time with Pathway & Bokeh)
+Dynamic Parking Pricing System (Real-time with Pathway & Bokeh)
 This project implements a real-time dynamic parking pricing model that adjusts parking fees based on factors like demand, traffic, queue length, special events, and vehicle type. The goal is to optimize resource usage, reduce congestion, and improve user experience by simulating real-world parking dynamics using streaming data.
-## 📌 Key Features
+Key Features
 
-- ⏱️ **Real-time processing** using [Pathway](https://github.com/pathwaycom/pathway)
-- 📊 **Interactive price visualizations** using Bokeh + Panel
-- 🧠 **Two intelligent pricing models**: Baseline and Demand-Based
-- 📈 Prices stay fair: always between **0.5x and 2x** of the base price
+**Real-time processing** using [Pathway](https://github.com/pathwaycom/pathway)
+**Interactive price visualizations** using Bokeh + Panel
+**Two intelligent pricing models**: Baseline and Demand-Based
+Prices stay fair: always between **0.5x and 2x** of the base price
 
-## 📂 Dataset Overview
+##  Dataset Overview
 
 The project uses a **simulated real-time dataset** that mimics the behavior of multiple city parking lots across different conditions.
 
-### 🔸 Source File
+###Source File
 - **File Name**: `dataset.csv`
 - **Format**: CSV (Comma-Separated Values)
 - **Rows**: 18,368
 - **Parking Lots**: 14 unique locations (identified via `SystemCodeNumber`)
 
-### 🔸 Schema
+### Schema
 
 | Column Name           | Description                                              | Type     |
 |-----------------------|----------------------------------------------------------|----------|
@@ -33,7 +33,7 @@ The project uses a **simulated real-time dataset** that mimics the behavior of m
 | `IsSpecialDay`        | Indicates special events (e.g. holidays, festivals)      | boolean  |
 | `VehicleType`         | Type of vehicle: Bike, Car, Truck , Cycle                 | string   |
 
-### 🔸 Engineered Features
+###  Engineered Features
 
 These are derived during stream ingestion using `Pathway` and UDFs:
 
@@ -46,7 +46,7 @@ These are derived during stream ingestion using `Pathway` and UDFs:
 | `instance`      | Time-based grouping for real-time windowing            |
 | `Timestamp`     | Event timestamp (format: `%Y-%m-%d %H:%M:%S`)   
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Component         | Tool / Library           | Role                            |
 |------------------|--------------------------|---------------------------------|
@@ -56,19 +56,19 @@ These are derived during stream ingestion using `Pathway` and UDFs:
 | Storage          | CSV, JSONL               | Input stream and output data    |
 | Notebook         | Google Colab             | Dev & demo environment          |
 
-## 🧠 Model 1: Real-Time Baseline Pricing Model
+## Model 1: Real-Time Baseline Pricing Model
 
 This model calculates a **dynamic base price** for each parking lot in real-time based on daily occupancy fluctuations. It uses **Pathway's stream processing** to aggregate data in **daily tumbling windows**.
 
-### ⚙️ Key Idea
+### Key Idea
 
 A parking lot’s demand volatility is captured using the difference between **maximum** and **minimum occupancy rate** within a day. Higher volatility suggests higher demand, which justifies price adjustments.
 
-### 📈 Pricing Formula
+### Pricing Formula
 <pre> price = base_price + (occ_max - occ_min) / capacity </pre>
 
 
-### 🧱 Architecture Flow
+### Architecture Flow
 
 1. **Initial Ingestion**: Load CSV data using `Pandas`
 2. **Preprocessing**: Feature engineering including `OccupancyRate` and timestamp parsing
@@ -80,16 +80,16 @@ A parking lot’s demand volatility is captured using the difference between **m
 6. **Pricing Calculation**: Using the formula above
 7. **Export/Plotting**: Saved to JSONL and visualized using Bokeh
 
-## 📈 Results & Inference
+## Results & Inference
 - **Goal**: Adjust the parking price based on daily variations in occupancy.
 - **Observation**: The plotted price fluctuates across days for each lot, depending on the difference between maximum and minimum occupancy rates.
 - **Inference**: Lots with high variation in occupancy see greater pricing adjustments, reflecting dynamic demand. This model ensures basic responsiveness without overcomplicating the logic.
 
-## ⚡ Model 2: Demand-Based Dynamic Pricing
+## Model 2: Demand-Based Dynamic Pricing
 
 This model adjusts parking prices based on **real-world demand factors** that affect parking pressure in urban areas. It provides a more responsive pricing scheme than the baseline.
 
-### 🔍 Demand Formula
+### Demand Formula
 
 We define a composite demand function:
 
@@ -103,7 +103,7 @@ Where:
 - `δ` (delta) = 2.0 → Boosts price on special days
 - `ε` (epsilon) = 1.0 → Based on type of vehicle (e.g., Truck > Car > Bike > Cycle)
 
-### 💰 Price Formula
+### Price Formula
 price = base_price × (1 + λ × NormalizedDemand)
 
 - `base_price` = 10 (minimum baseline)
@@ -111,13 +111,13 @@ price = base_price × (1 + λ × NormalizedDemand)
 - `NormalizedDemand` = demand / max_demand, clipped to [0.0, 1.0]
 - Price is clipped to remain within [0.5 × base, 2.0 × base]
 
-### 🎯 Intuition
+### Intuition
 
 - Encourages **higher prices when demand is high** (e.g., long queues, special events)
 - Offers **lower prices when conditions are relaxed**
 - Ensures prices stay within a safe, **bounded range**
 
-### 🔄 Architecture Flow
+### Architecture Flow
 
 1. **Inittial Ingestion**: Load CSV data using `Pandas`.
 2. **Preprocessing**:
@@ -134,16 +134,11 @@ price = base_price × (1 + λ × NormalizedDemand)
    - JSONL file written using Pathway
    - Visualized using Bokeh (per-lot pricing trends)
 
-## 📈 Results & Inference
+##  Results & Inference
 - **Goal**: Determine a more intelligent price based on a combination of factors — occupancy, queue length, traffic condition, vehicle type, and special day status.
 - **Observation**: The plotted prices show more refined variation, often differing from Model 1, as they react to multi-factor demand changes.
 - **Inference**: This model provides nuanced and fair pricing by factoring in local demand stressors. For example, high traffic and long queues during a festival day lead to higher prices.
 
 ---
-### 🏗️ Architecture Diagram
+### Architecture Diagram
 ![Workflow Diagram](architecture_diagram.png)
-
----
-### 🚀 Future Improvements
-
-While the project currently implements two core dynamic pricing models — a **Real-Time Baseline Model** and a **Demand-Based Pricing Model** — a potential enhancement includes integrating a **Competitive Pricing Model**. This model would dynamically adjust parking rates based on nearby competitors’ pricing using geographic proximity (latitude and longitude). Additionally, future work could explore deeper integration of real-world traffic APIs, predictive occupancy trends, and user behavior analytics to further optimize pricing strategies and rerouting decisions.
