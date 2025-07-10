@@ -1,6 +1,4 @@
-# cac-iitg_analytics -- Capstone
-
-
+![image](https://github.com/user-attachments/assets/3b84ab84-fb5f-4784-a865-b2d31da726ce)# cac-iitg_analytics -- Capstone
 🚗 Dynamic Parking Pricing System (Real-time with Pathway & Bokeh)
 This project implements a real-time dynamic parking pricing model that adjusts parking fees based on factors like demand, traffic, queue length, special events, and vehicle type. The goal is to optimize resource usage, reduce congestion, and improve user experience by simulating real-world parking dynamics using streaming data.
 
@@ -18,15 +16,15 @@ Format: CSV (Comma-Separated Values)
 Rows: 18,368
 Parking Lots: 14 unique locations (identified via SystemCodeNumber)
 🔸 Schema
-Column Name	Description	Type
-SystemCodeNumber	Unique ID for each parking lot	string
-Latitude	Geographic latitude of the parking lot location	float
-Longitude	Geographic longitude of the parking lot location	float
-LastUpdatedDate	The date when the occupancy data was last updated	string
-LastUpdatedDate	The exact time on the update date when the data was recorded.	string
-Occupancy	Current number of parked vehicles	int
-Capacity	Total capacity of the parking lot	int
-QueueLength	Number of vehicles waiting to park	int
+Column Name	          Description	Type
+SystemCodeNumber	     Unique ID for each parking lot	string
+Latitude	             Geographic   latitude of the parking lot location	float
+Longitude	            Geographic   longitude of the parking lot location	float
+LastUpdatedDate	      The date when the occupancy data was last updated	string
+LastUpdatedDate      	The exact time on the update date when the data was recorded.	string
+Occupancy	           Current number of parked vehicles	int
+Capacity	             Total capacity of the parking lot	int
+QueueLength	          Number of vehicles waiting to park	int
 TrafficConditionNearby	Nearby traffic status: Low, Average or High	string
 IsSpecialDay	Indicates special events (e.g. holidays, festivals)	boolean
 VehicleType	Type of vehicle: Bike, Car, Truck , Cycle	string
@@ -113,8 +111,4 @@ Visualized using Bokeh (per-lot pricing trends)
 Goal: Determine a more intelligent price based on a combination of factors — occupancy, queue length, traffic condition, vehicle type, and special day status.
 Observation: The plotted prices show more refined variation, often differing from Model 1, as they react to multi-factor demand changes.
 Inference: This model provides nuanced and fair pricing by factoring in local demand stressors. For example, high traffic and long queues during a festival day lead to higher prices.
-🏗️ Architecture Diagram
-Workflow Diagram
 
-🚀 Future Improvements
-While the project currently implements two core dynamic pricing models — a Real-Time Baseline Model and a Demand-Based Pricing Model — a potential enhancement includes integrating a Competitive Pricing Model. This model would dynamically adjust parking rates based on nearby competitors’ pricing using geographic proximity (latitude and longitude). Additionally, future work could explore deeper integration of real-world traffic APIs, predictive occupancy trends, and user behavior analytics to further optimize pricing strategies and rerouting decisions.
